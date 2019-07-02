@@ -22,10 +22,12 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class OrderAppTest {
+	/*{"sample_command.json", "sample_result.txt"}*/
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         Object[][] data = new Object[][]{
-                {"sample_command.json", "sample_result.txt"},
+        	{"sample_command.json", "sample_result.txt"},
+                {"One_command.json", "TestOne_result.txt"}
                 
         };
 

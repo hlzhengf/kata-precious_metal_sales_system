@@ -94,7 +94,6 @@ public class OrderApp {
 		// 新会员积分
 		BigDecimal memberPoints = memberPointsIncreased.add(member.getMemberPoints());
 		// 新的会员等级
-		member.setMemberPoints(memberPoints);
 		String oldMemberType = member.getOldMemberType();
 		String newMemberType = member.getMemberLeve(memberPoints);
 		String memberName = member.getMemberName();

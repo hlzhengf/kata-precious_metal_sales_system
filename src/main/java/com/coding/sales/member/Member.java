@@ -70,13 +70,13 @@ public class Member {
 		if(CustomerLevel.COMMONCCARD.getName().equals(oldMemberType)){ 
 			result=result.add(amount);
 		}
-		if(CustomerLevel.GOLDCARD.equals(oldMemberType)){
+		if(CustomerLevel.GOLDCARD.getName().equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(1.5)));
 		}
-		if(CustomerLevel.PLATINUMCARD.equals(oldMemberType)){
+		if(CustomerLevel.PLATINUMCARD.getName().equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(1.8)));
 		}
-		if(CustomerLevel.DIAMONDSCARD.equals(oldMemberType)){
+		if(CustomerLevel.DIAMONDSCARD.getName().equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(2)));
 		}
 		return result;

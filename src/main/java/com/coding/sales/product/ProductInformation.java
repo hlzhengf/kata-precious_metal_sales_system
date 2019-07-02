@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.coding.sales.StringUtil;
 
@@ -83,7 +82,7 @@ public class ProductInformation {
 		Map discountInfo = new HashMap();
 		if(list.size()>0){
 			if(compare.size()>0)
-				Collections.sort(list);
+			Collections.sort(list);
 			discountInfo.put("method", compare.get((BigDecimal) list.get(list.size()-1)));
 			discountInfo.put("discountAmount", (BigDecimal) list.get(list.size()-1));
 		}
