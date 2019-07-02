@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 public class Member {
 
+	private static final int ONEHUNDREDTHOUSAND = 100000;
+	private static final int FIFTYTHOUSAND = 50000;
+	private static final int TENTHOUSAND = 10000;
 	private String memberNo;
 	private String cardNumber;
 	private BigDecimal memberPoints;
@@ -63,7 +66,7 @@ public class Member {
 	}	
 	public   BigDecimal calculationPointsByLevel(BigDecimal amount){
 		
-		BigDecimal result=new BigDecimal(0);
+		BigDecimal result=BigDecimal.ZERO;
 		if(CustomerLevel.COMMONCCARD.getName().equals(oldMemberType)){ 
 			result=result.add(amount);
 		}
@@ -81,16 +84,16 @@ public class Member {
 	
 	public String  getMemberLeve(BigDecimal addPoints){
 		BigDecimal totalPoints=memberPoints.add(addPoints);
-		 if (totalPoints.compareTo(new BigDecimal(10000)) == -1) {
+		 if (totalPoints.compareTo(new BigDecimal(TENTHOUSAND)) == -1) {
             return CustomerLevel.COMMONCCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(50000)) < 0) {
+        } else if (totalPoints.compareTo(new BigDecimal(FIFTYTHOUSAND)) < 0) {
            return CustomerLevel.GOLDCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(100000)) < 0) {
+        } else if (totalPoints.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) < 0) {
         	return CustomerLevel.PLATINUMCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(100000)) > -1) {
+        } else if (totalPoints.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) > -1) {
         	return CustomerLevel.DIAMONDSCARD.getName();
  
         }
