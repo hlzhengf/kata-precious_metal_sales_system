@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.coding.sales.input.PaymentCommand;
+
 
 /**
  * 用于打印的销售凭证
@@ -46,6 +48,7 @@ public class OrderRepresentation {
      * @param payments              付款记录
      * @param discountCards         付款使用的打折券
      */
+    
     public OrderRepresentation(String orderId, Date createTime,
                                String memberNo, String memberName, String oldMemberType, String newMemberType, int memberPointsIncreased, int memberPoints,
                                List<OrderItemRepresentation> orderItems,
@@ -68,7 +71,9 @@ public class OrderRepresentation {
         this.discountCards = discountCards;
     }
 
-    @Override
+   
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
