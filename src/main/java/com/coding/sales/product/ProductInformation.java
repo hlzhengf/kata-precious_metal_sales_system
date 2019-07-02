@@ -70,13 +70,13 @@ public class ProductInformation {
 		BigDecimal fullReducAmount = new BigDecimal("0");
 		Map compare = new HashMap();
 		List list = new ArrayList();
+		BigDecimal total = price.multiply(new BigDecimal(amount));
 		if(!StringUtil.isNullOrEmpty(discountCard)){
 			DiscountCard discount = (DiscountCard)discountCardMap.get(discountCard);
-			discountAmount = price.multiply(new BigDecimal(amount)).multiply(new BigDecimal(discount.getDiscountNum()));
+			discountAmount = total.multiply(new BigDecimal(1-discount.getDiscountNum()));
 			compare.put(discountAmount, discountCard);
 			list.add(discountAmount);
 		}
-		BigDecimal total = price.multiply(new BigDecimal(amount));
 		if(fullReductions != null && fullReductions.length>0){
 			for (String fullRed : fullReductions) {
 				FullReduction fullRedEntity = (FullReduction)fullReductionMap.get(fullRed);
@@ -84,14 +84,16 @@ public class ProductInformation {
 				BigDecimal reduction = fullRedEntity.getReduction();
 				if("0".equals(fullRedEntity.getType())){
 					if(total.compareTo(fullLimit) ==1){
-						fullReducAmount = total.subtract(reduction);
+						fullReducAmount = reduction;
 					}
 				}else if("1".equals(fullRedEntity.getType())){
 					if(new BigDecimal(amount).compareTo(fullRedEntity.getFullLimit()) == 1)
-						fullReducAmount = price.multiply(new BigDecimal(amount).subtract(fullRedEntity.getReduction()));
+						fullReducAmount = price.subtract(fullRedEntity.getReduction());
 				}
-				compare.put(fullReducAmount,fullRed);
-				list.add(fullReducAmount);
+				if(fullReducAmount.compareTo(new BigDecimal(0))==1){
+					compare.put(fullReducAmount,fullRed);
+					list.add(fullReducAmount);
+				}
 			}
 		}
 		Map discountInfo = new HashMap();
@@ -99,7 +101,7 @@ public class ProductInformation {
 			if(compare.size()>0)
 				Collections.sort(list);
 			discountInfo.put("method", compare.get((BigDecimal) list.get(list.size()-1)));
-			discountInfo.put("discountAmount", total.subtract((BigDecimal) list.get(list.size()-1)));
+			discountInfo.put("discountAmount", (BigDecimal) list.get(list.size()-1));
 		}
 		
 		return discountInfo;
