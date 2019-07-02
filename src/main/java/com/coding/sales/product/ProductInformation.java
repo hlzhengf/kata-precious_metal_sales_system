@@ -78,23 +78,7 @@ public class ProductInformation {
 			list.add(discountAmount);
 		}
 		if(fullReductions != null && fullReductions.length>0){
-			for (String fullRed : fullReductions) {
-				FullReduction fullRedEntity = (FullReduction)fullReductionMap.get(fullRed);
-				BigDecimal fullLimit = fullRedEntity.getFullLimit();
-				BigDecimal reduction = fullRedEntity.getReduction();
-				if("0".equals(fullRedEntity.getType())){
-					if(total.compareTo(fullLimit) ==1){
-						fullReducAmount = reduction;
-					}
-				}else if("1".equals(fullRedEntity.getType())){
-					if(new BigDecimal(amount).compareTo(fullRedEntity.getFullLimit()) == 1)
-						fullReducAmount = price.subtract(fullRedEntity.getReduction());
-				}
-				if(fullReducAmount.compareTo(new BigDecimal(0))==1){
-					compare.put(fullReducAmount,fullRed);
-					list.add(fullReducAmount);
-				}
-			}
+			fullReducAmount = handleFullReducAmount(fullReductionMap, amount, fullReducAmount, compare, list, total);
 		}
 		Map discountInfo = new HashMap();
 		if(list.size()>0){
@@ -105,6 +89,27 @@ public class ProductInformation {
 		}
 		
 		return discountInfo;
+	}
+	private BigDecimal handleFullReducAmount(Map fullReductionMap, int amount, BigDecimal fullReducAmount, Map compare,
+			List list, BigDecimal total) {
+		for (String fullRed : fullReductions) {
+			FullReduction fullRedEntity = (FullReduction)fullReductionMap.get(fullRed);
+			BigDecimal fullLimit = fullRedEntity.getFullLimit();
+			BigDecimal reduction = fullRedEntity.getReduction();
+			if("0".equals(fullRedEntity.getType())){
+				if(total.compareTo(fullLimit) ==1){
+					fullReducAmount = reduction;
+				}
+			}else if("1".equals(fullRedEntity.getType())){
+				if(new BigDecimal(amount).compareTo(fullRedEntity.getFullLimit()) == 1)
+					fullReducAmount = price.subtract(fullRedEntity.getReduction());
+			}
+			if(fullReducAmount.compareTo(new BigDecimal(0))==1){
+				compare.put(fullReducAmount,fullRed);
+				list.add(fullReducAmount);
+			}
+		}
+		return fullReducAmount;
 	}
 	
 }
