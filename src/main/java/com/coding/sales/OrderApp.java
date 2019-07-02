@@ -82,13 +82,9 @@ public class OrderApp {
 
 	OrderRepresentation checkout(OrderCommand command) {
 		OrderRepresentation result = null;
-		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		Date createTime = null;
-		try {
-			createTime = simpleDateFormat.parse(command.getCreateTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		createTime = HandleCreateTime(command, createTime);
 		
 		String orderId = command.getOrderId();
 		String memberNo = command.getMemberId();
@@ -129,6 +125,16 @@ public class OrderApp {
 				memberPointsIncreased.intValue(), memberPoints.intValue(), orderItems, totalAmount, discounts,
 				totalDiscountPrice, receivables, paymentRepresentations, discountCards);
 		return result;
+	}
+
+	private Date HandleCreateTime(OrderCommand command, Date createTime) {
+		try {
+			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			createTime = simpleDateFormat.parse(command.getCreateTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return createTime;
 	}
 
 	private Map<String, Object> getOrderItemRepresentations(List<OrderItemCommand> items,
