@@ -87,7 +87,9 @@ public class OrderApp {
         //新的会员等级
         member.setMemberPoints(memberPoints);
         String oldMemberType=member.getOldMemberType();
-        String newMemberType=member.getNewMemberType();
+        
+        
+        String newMemberType=member.getMemberLeve(memberPoints);
         String memberName=member.getMemberName();
         //订单，明细
         List<OrderItemCommand> items=command.getItems();
@@ -249,7 +251,7 @@ public class OrderApp {
 	}
 
 	private ProductInformation getProductInformationById(String product) {
-		return null;
+		return (ProductInformation)productMap.get(product);
 	}
 
 	private BigDecimal getAmount(OrderCommand command) {
@@ -258,6 +260,6 @@ public class OrderApp {
 	}
 
 	private Member getMemberByNo(String memberNo) {
-		return null;
+		return (Member) memberMap.get(memberNo);
 	}
 }

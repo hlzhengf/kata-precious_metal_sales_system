@@ -69,16 +69,16 @@ public class Member {
 		
 		BigDecimal result=new BigDecimal(0);
 		if(COMMONCCARD.equals(oldMemberType)){ 
-			result.add(amount);
+			result=result.add(amount);
 		}
 		if(GOLDCARD.equals(oldMemberType)){
-			result.add(amount.multiply(new BigDecimal(1.5)));
+			result=result.add(amount.multiply(new BigDecimal(1.5)));
 		}
 		if(PLATINUMCARD.equals(oldMemberType)){
-			result.add(amount.multiply(new BigDecimal(1.8)));
+			result=result.add(amount.multiply(new BigDecimal(1.8)));
 		}
 		if(DIAMONDSCARD.equals(oldMemberType)){
-			result.add(amount.multiply(new BigDecimal(2)));
+			result=result.add(amount.multiply(new BigDecimal(2)));
 		}
 		return result;
 	}
