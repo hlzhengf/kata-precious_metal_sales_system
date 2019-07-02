@@ -112,7 +112,7 @@ public class OrderApp {
 		List<PaymentRepresentation> paymentRepresentations = new ArrayList<PaymentRepresentation>();
 		paymentCommandToPaymentRepresentation(payments, paymentRepresentations);
 		
-		List<String> discountCards = command.getDiscounts();
+		List<String> discountCards = (List<String>) resultMap.get("discountCards");
 
 		result = new OrderRepresentation(orderId, createTime, memberNo, memberName, oldMemberType, newMemberType,
 				memberPointsIncreased.intValue(), memberPoints.intValue(), orderItems, totalAmount, discounts,
@@ -149,6 +149,7 @@ public class OrderApp {
 		Map<String, Object> map = new HashMap<String, Object>();
 		BigDecimal totalAmount = new BigDecimal(0);
 		Map<String, Object> productDiscountMap = new HashMap<String, Object>();
+		List<String> discountCards = new ArrayList<String>();
 		for (OrderItemCommand orderItemCommand : items) {
 			ProductInformation productInformation = getProductInformationById(orderItemCommand.getProduct());
 
@@ -163,6 +164,10 @@ public class OrderApp {
 
 			Map<String, Object> discountMap = productInformation.calculationDiscountAmount(fullReductionMap,
 					discountCardMap, Integer.parseInt(count.toString()));
+			
+			String discountMethod = (String)discountMap.get("method");
+			Object discountcard = discountCardMap.get(discountMethod);
+			if(null!=discountcard) discountCards.add(discountMethod);
 
 			BigDecimal discountAmount = (BigDecimal) discountMap.get("discountAmount") == null ? new BigDecimal(0)
 					: (BigDecimal) discountMap.get("discountAmount");
@@ -178,6 +183,7 @@ public class OrderApp {
 		map.put("totalAmount", totalAmount);
 		map.put("productDiscountMap", productDiscountMap);
 		map.put("discounts", discountItems);
+		map.put("discountCards", discountCards);
 		return map;
 	}
 
