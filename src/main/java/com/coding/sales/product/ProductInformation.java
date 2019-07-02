@@ -94,11 +94,13 @@ public class ProductInformation {
 				list.add(fullReducAmount);
 			}
 		}
-		if(compare.size()>0)
-			Collections.sort(list);
 		Map discountInfo = new HashMap();
-		discountInfo.put("method", compare.get((BigDecimal) list.get(list.size()-1)));
-		discountInfo.put("discountAmount", total.subtract((BigDecimal) list.get(list.size()-1)));
+		if(list.size()>0){
+			if(compare.size()>0)
+				Collections.sort(list);
+			discountInfo.put("method", compare.get((BigDecimal) list.get(list.size()-1)));
+			discountInfo.put("discountAmount", total.subtract((BigDecimal) list.get(list.size()-1)));
+		}
 		
 		return discountInfo;
 	}
