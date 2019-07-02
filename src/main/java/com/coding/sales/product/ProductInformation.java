@@ -3,8 +3,10 @@ package com.coding.sales.product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.coding.sales.StringUtil;
 
@@ -63,14 +65,16 @@ public class ProductInformation {
 		this.fullReductions = fullReductions;
 	}
 	//计算优惠钱数
-	public BigDecimal calculationDiscountAmount(Map fullReductionMap,Map discountCardMap,int amount){
+	public Map calculationDiscountAmount(Map fullReductionMap,Map discountCardMap,int amount){
 		BigDecimal discountAmount = new BigDecimal("0");
 		BigDecimal fullReducAmount = new BigDecimal("0");
-		List compare = new ArrayList();
+		Map compare = new HashMap();
+		List list = new ArrayList();
 		if(!StringUtil.isNullOrEmpty(discountCard)){
 			DiscountCard discount = (DiscountCard)discountCardMap.get(discountCard);
 			discountAmount = price.multiply(new BigDecimal(amount)).multiply(new BigDecimal(discount.getDiscountNum()));
-			compare.add(discountAmount);
+			compare.put(discountAmount, discountCard);
+			list.add(discountAmount);
 		}
 		BigDecimal total = price.multiply(new BigDecimal(amount));
 		if(fullReductions != null && fullReductions.length>0){
@@ -86,13 +90,17 @@ public class ProductInformation {
 					if(new BigDecimal(amount).compareTo(fullRedEntity.getFullLimit()) == 1)
 						fullReducAmount = price.multiply(new BigDecimal(amount).subtract(fullRedEntity.getReduction()));
 				}
-				compare.add(fullReducAmount);
+				compare.put(fullReducAmount,fullRed);
+				list.add(fullReducAmount);
 			}
 		}
 		if(compare.size()>0)
-			Collections.sort(compare);
+			Collections.sort(list);
+		Map discountInfo = new HashMap();
+		discountInfo.put("method", compare.get((BigDecimal) list.get(list.size()-1)));
+		discountInfo.put("discountAmount", total.subtract((BigDecimal) list.get(list.size()-1)));
 		
-		return total.subtract((BigDecimal) compare.get(compare.size()-1));
+		return discountInfo;
 	}
 	
 }
