@@ -87,17 +87,13 @@ public class OrderApp {
 		String memberNo = command.getMemberId();
 		Member member = getMemberByNo(memberNo);
 
-		// 获取总金额
 		BigDecimal amount = getAmount(command);
-		// 新增积分
 		BigDecimal memberPointsIncreased = member.calculationPointsByLevel(amount);
-		// 新会员积分
 		BigDecimal memberPoints = memberPointsIncreased.add(member.getMemberPoints());
-		// 新的会员等级
 		String oldMemberType = member.getOldMemberType();
 		String newMemberType = member.getMemberLeve(memberPoints);
 		String memberName = member.getMemberName();
-		// 订单，明细
+		
 		List<OrderItemCommand> items = command.getItems();
 		List<OrderItemRepresentation> orderItems = new ArrayList<OrderItemRepresentation>();
 		Map<String, Object> resultMap = getOrderItemRepresentations(items, orderItems);
@@ -105,7 +101,6 @@ public class OrderApp {
 		BigDecimal totalAmount = (BigDecimal) resultMap.get("totalAmount");
 
 		List<DiscountItemRepresentation> discounts = (List<DiscountItemRepresentation>) resultMap.get("discounts");
-		// 应收金额
 		BigDecimal receivables = totalAmount.subtract(totalDiscountPrice);
 		List<PaymentCommand> payments = command.getPayments();
 		List<PaymentRepresentation> paymentRepresentations = new ArrayList<PaymentRepresentation>();
