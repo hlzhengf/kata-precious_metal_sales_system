@@ -14,7 +14,17 @@ public class Member {
 	private String memberName;
 	private String newMemberType;
 	private String oldMemberType;
-	 
+	
+	public Member(String memberNo, String cardNumber, BigDecimal memberPoints, String memberName, String newMemberType,
+			String oldMemberType) {
+		super();
+		this.memberNo = memberNo;
+		this.cardNumber = cardNumber;
+		this.memberPoints = memberPoints;
+		this.memberName = memberName;
+		this.newMemberType = newMemberType;
+		this.oldMemberType = oldMemberType;
+	}
 	public String getMemberNo() {
 		return memberNo;
 	}

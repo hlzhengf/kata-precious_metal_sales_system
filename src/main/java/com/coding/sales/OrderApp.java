@@ -28,6 +28,7 @@ public class OrderApp {
 	static Map productMap = new HashMap();
     static Map discountCardMap = new HashMap();
     static Map fullReductionMap = new HashMap();
+    static Map memberMap = new HashMap();
     static{
     	discountCardMap.put("9折券", new DiscountCard("9折券", 0.9));
     	discountCardMap.put("95折券", new DiscountCard("95折券", 0.95));
@@ -43,6 +44,10 @@ public class OrderApp {
     	productMap.put("002002", new ProductInformation("中国经典钱币套装", "002002", new BigDecimal("998"), "册", null, new String[]{"每满2000元减30","每满1000元减10"}));
     	productMap.put("002001", new ProductInformation("守扩之羽比翼双飞4.8g", "002001", new BigDecimal("1080"), "条", "95折券", new String[]{"第3件半价","满3送1"}));
     	productMap.put("002003", new ProductInformation("中国银象棋12g", "002003", new BigDecimal("698"), "套", "9折券", new String[]{"每满3000元减350","每满2000元减30","每满1000元减10"}));
+    	memberMap.put("6236609999", new Member("6236609999", "6236609999", new BigDecimal(9860), "马丁", null, "普卡"));
+    	memberMap.put("6630009999", new Member("6630009999", "6630009999", new BigDecimal(48860), "王立", null, "金卡"));
+    	memberMap.put("8230009999", new Member("8230009999", "8230009999", new BigDecimal(98860), "李想", null, "白金卡"));
+    	memberMap.put("9230009999", new Member("9230009999", "9230009999", new BigDecimal(198860), "张三", null, "钻石卡"));
     }
     public static void main(String[] args) {
     	discountCardMap.get("9折券");
