@@ -14,7 +14,7 @@ public class Member {
 	private String memberName;
 	private String newMemberType;
 	private String oldMemberType;
-	
+	public Member(){}
 	public Member(String memberNo, String cardNumber, BigDecimal memberPoints, String memberName, String newMemberType,
 			String oldMemberType) {
 		super();
