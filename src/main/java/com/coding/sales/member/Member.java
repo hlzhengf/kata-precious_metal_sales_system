@@ -4,10 +4,6 @@ import java.math.BigDecimal;
 
 public class Member {
 
-	private static final String DIAMONDSCARD = "钻石卡";
-	private static final String PLATINUMCARD = "白金卡";
-	private static final String GOLDCARD = "金卡";
-	private static final String COMMONCCARD = "普卡";
 	private String memberNo;
 	private String cardNumber;
 	private BigDecimal memberPoints;
@@ -68,16 +64,16 @@ public class Member {
 	public   BigDecimal calculationPointsByLevel(BigDecimal amount){
 		
 		BigDecimal result=new BigDecimal(0);
-		if(COMMONCCARD.equals(oldMemberType)){ 
+		if(CustomerLevel.COMMONCCARD.getName().equals(oldMemberType)){ 
 			result=result.add(amount);
 		}
-		if(GOLDCARD.equals(oldMemberType)){
+		if(CustomerLevel.GOLDCARD.equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(1.5)));
 		}
-		if(PLATINUMCARD.equals(oldMemberType)){
+		if(CustomerLevel.PLATINUMCARD.equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(1.8)));
 		}
-		if(DIAMONDSCARD.equals(oldMemberType)){
+		if(CustomerLevel.DIAMONDSCARD.equals(oldMemberType)){
 			result=result.add(amount.multiply(new BigDecimal(2)));
 		}
 		return result;
@@ -86,16 +82,16 @@ public class Member {
 	public String  getMemberLeve(BigDecimal addPoints){
 		BigDecimal totalPoints=memberPoints.add(addPoints);
 		 if (totalPoints.compareTo(new BigDecimal(10000)) == -1) {
-            return COMMONCCARD;
+            return CustomerLevel.COMMONCCARD.getName();
  
         } else if (totalPoints.compareTo(new BigDecimal(50000)) < 0) {
-           return GOLDCARD;
+           return CustomerLevel.GOLDCARD.getName();
  
         } else if (totalPoints.compareTo(new BigDecimal(100000)) < 0) {
-        	return PLATINUMCARD;
+        	return CustomerLevel.PLATINUMCARD.getName();
  
         } else if (totalPoints.compareTo(new BigDecimal(100000)) > -1) {
-        	return DIAMONDSCARD;
+        	return CustomerLevel.DIAMONDSCARD.getName();
  
         }
 		 return "";

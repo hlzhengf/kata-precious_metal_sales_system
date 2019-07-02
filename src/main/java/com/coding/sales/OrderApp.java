@@ -151,7 +151,9 @@ public class OrderApp {
 
 			BigDecimal discountAmount = (BigDecimal) discountMap.get("discountAmount") == null ? new BigDecimal(0)
 					: (BigDecimal) discountMap.get("discountAmount");
-			discountItems.add(new DiscountItemRepresentation(productNo, productName, discountAmount));
+			if ((BigDecimal) discountMap.get("discountAmount") != null) {
+				discountItems.add(new DiscountItemRepresentation(productNo, productName, discountAmount));
+			}
 			totalDiscountPrice = totalDiscountPrice.add(discountAmount);
 			totalAmount = totalAmount.add(subTotal);
 
