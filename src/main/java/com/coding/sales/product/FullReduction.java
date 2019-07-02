@@ -31,4 +31,5 @@ public class FullReduction {
 	public void setReduction(BigDecimal reduction) {
 		this.reduction = reduction;
 	}
+	
 }
