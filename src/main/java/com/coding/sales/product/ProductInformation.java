@@ -92,7 +92,7 @@ public class ProductInformation {
 		if(compare.size()>0)
 			Collections.sort(compare);
 		
-		return (BigDecimal) compare.get(compare.size()-1);
+		return total.subtract((BigDecimal) compare.get(compare.size()-1));
 	}
 	
 }
