@@ -82,18 +82,17 @@ public class Member {
 		return result;
 	}
 	
-	public String  getMemberLeve(BigDecimal addPoints){
-		BigDecimal totalPoints=memberPoints.add(addPoints);
-		 if (totalPoints.compareTo(new BigDecimal(TENTHOUSAND)) == -1) {
+	public String  getMemberLeve(BigDecimal points){
+		 if (points.compareTo(new BigDecimal(TENTHOUSAND)) == -1) {
             return CustomerLevel.COMMONCCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(FIFTYTHOUSAND)) < 0) {
+        } else if (points.compareTo(new BigDecimal(FIFTYTHOUSAND)) < 0) {
            return CustomerLevel.GOLDCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) < 0) {
+        } else if (points.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) < 0) {
         	return CustomerLevel.PLATINUMCARD.getName();
  
-        } else if (totalPoints.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) > -1) {
+        } else if (points.compareTo(new BigDecimal(ONEHUNDREDTHOUSAND)) > -1) {
         	return CustomerLevel.DIAMONDSCARD.getName();
  
         }
