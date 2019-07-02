@@ -60,7 +60,6 @@ public class OrderApp {
 	}
 
 	public static void main(String[] args) {
-		discountCardMap.get("9折券");
 		if (args.length != 2) {
 			throw new IllegalArgumentException("参数不正确。参数1为销售订单的JSON文件名，参数2为待打印销售凭证的文本文件名.");
 		}
@@ -82,9 +81,7 @@ public class OrderApp {
 
 	OrderRepresentation checkout(OrderCommand command) {
 		OrderRepresentation result = null;
-		
-		Date createTime = null;
-		createTime = HandleCreateTime(command, createTime);
+		Date createTime = HandleCreateTime(command);
 		
 		String orderId = command.getOrderId();
 		String memberNo = command.getMemberId();
@@ -99,7 +96,6 @@ public class OrderApp {
 		// 新的会员等级
 		member.setMemberPoints(memberPoints);
 		String oldMemberType = member.getOldMemberType();
-
 		String newMemberType = member.getMemberLeve(memberPoints);
 		String memberName = member.getMemberName();
 		// 订单，明细
@@ -114,11 +110,8 @@ public class OrderApp {
 		BigDecimal receivables = totalAmount.subtract(totalDiscountPrice);
 		List<PaymentCommand> payments = command.getPayments();
 		List<PaymentRepresentation> paymentRepresentations = new ArrayList<PaymentRepresentation>();
-		for (PaymentCommand paymentCommand : payments) {
-			PaymentRepresentation paymentRepresentation = new PaymentRepresentation(paymentCommand.getType(),
-					paymentCommand.getAmount());
-			paymentRepresentations.add(paymentRepresentation);
-		}
+		paymentCommandToPaymentRepresentation(payments, paymentRepresentations);
+		
 		List<String> discountCards = command.getDiscounts();
 
 		result = new OrderRepresentation(orderId, createTime, memberNo, memberName, oldMemberType, newMemberType,
@@ -127,7 +120,17 @@ public class OrderApp {
 		return result;
 	}
 
-	private Date HandleCreateTime(OrderCommand command, Date createTime) {
+	private void paymentCommandToPaymentRepresentation(List<PaymentCommand> payments,
+			List<PaymentRepresentation> paymentRepresentations) {
+		for (PaymentCommand paymentCommand : payments) {
+			PaymentRepresentation paymentRepresentation = new PaymentRepresentation(paymentCommand.getType(),
+					paymentCommand.getAmount());
+			paymentRepresentations.add(paymentRepresentation);
+		}
+	}
+
+	private Date HandleCreateTime(OrderCommand command) {
+		Date  createTime=null;
 		try {
 			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			createTime = simpleDateFormat.parse(command.getCreateTime());
@@ -149,7 +152,6 @@ public class OrderApp {
 		for (OrderItemCommand orderItemCommand : items) {
 			ProductInformation productInformation = getProductInformationById(orderItemCommand.getProduct());
 
-			// 获得 订单明细信息
 			String productNo = productInformation.getProduct();
 			String productName = productInformation.getProductName();
 			BigDecimal price = productInformation.getPrice();
@@ -158,9 +160,7 @@ public class OrderApp {
 			OrderItemRepresentation orderItemRepresentation = new OrderItemRepresentation(productNo, productName, price,
 					count, subTotal);
 			orderItems.add(orderItemRepresentation);
-			// 根据订单编号查询订单信息
 
-			// 获取优惠明细
 			Map<String, Object> discountMap = productInformation.calculationDiscountAmount(fullReductionMap,
 					discountCardMap, Integer.parseInt(count.toString()));
 
@@ -171,9 +171,7 @@ public class OrderApp {
 			}
 			totalDiscountPrice = totalDiscountPrice.add(discountAmount);
 			totalAmount = totalAmount.add(subTotal);
-
 			productDiscountMap.put(productNo, discountAmount);
-
 			map.put(productNo, discountAmount);
 		}
 		map.put("totalDiscountPrice", totalDiscountPrice);
