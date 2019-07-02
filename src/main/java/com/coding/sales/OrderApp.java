@@ -1,6 +1,8 @@
 package com.coding.sales;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +82,14 @@ public class OrderApp {
 
 	OrderRepresentation checkout(OrderCommand command) {
 		OrderRepresentation result = null;
-		Date createTime = new Date();
+		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date createTime = null;
+		try {
+			createTime = simpleDateFormat.parse(command.getCreateTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		String orderId = command.getOrderId();
 		String memberNo = command.getMemberId();
 		Member member = getMemberByNo(memberNo);
