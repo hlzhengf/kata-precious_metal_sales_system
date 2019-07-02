@@ -7,6 +7,14 @@ public class FullReduction {
 	private String type;
 	private BigDecimal fullLimit;
 	private BigDecimal reduction;
+	
+	public FullReduction(String fullReductionName, String type, BigDecimal fullLimit, BigDecimal reduction) {
+		super();
+		this.fullReductionName = fullReductionName;
+		this.type = type;
+		this.fullLimit = fullLimit;
+		this.reduction = reduction;
+	}
 	public String getFullReductionName() {
 		return fullReductionName;
 	}
@@ -31,5 +39,4 @@ public class FullReduction {
 	public void setReduction(BigDecimal reduction) {
 		this.reduction = reduction;
 	}
-	
 }
