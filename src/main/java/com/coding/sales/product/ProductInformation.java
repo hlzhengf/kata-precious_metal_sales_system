@@ -1,6 +1,7 @@
 package com.coding.sales.product;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -64,17 +65,21 @@ public class ProductInformation {
 		this.fullReductions = fullReductions;
 	}
 	//计算优惠钱数
-	public Map calculationDiscountAmount(Map fullReductionMap,Map discountCardMap,int amount){
+	public Map calculationDiscountAmount(Map fullReductionMap,Map discountCardMap,int amount,List<String> discounts){
 		BigDecimal discountAmount = new BigDecimal("0");
 		BigDecimal fullReducAmount = new BigDecimal("0");
 		Map compare = new HashMap();
 		List list = new ArrayList();
 		BigDecimal total = price.multiply(new BigDecimal(amount));
-		if(!StringUtil.isNullOrEmpty(discountCard)){
+		if(!StringUtil.isNullOrEmpty(discountCard) && null != discounts && discounts.size()>0){
 			DiscountCard discount = (DiscountCard)discountCardMap.get(discountCard);
-			discountAmount = total.multiply(new BigDecimal(1-discount.getDiscountNum()));
-			compare.put(discountAmount, discountCard);
-			list.add(discountAmount);
+			for (String dis : discounts) {
+				if(dis.equals(discountCard)){
+					discountAmount = total.multiply(new BigDecimal(1-discount.getDiscountNum()));
+					compare.put(discountAmount, discountCard);
+					list.add(discountAmount);
+				}
+			}
 		}
 		if(fullReductions != null && fullReductions.length>0){
 			fullReducAmount = handleFullReducAmount(fullReductionMap, amount, fullReducAmount, compare, list, total);
@@ -96,8 +101,10 @@ public class ProductInformation {
 			BigDecimal fullLimit = fullRedEntity.getFullLimit();
 			BigDecimal reduction = fullRedEntity.getReduction();
 			if("0".equals(fullRedEntity.getType())){
-				if(total.compareTo(fullLimit) ==1){
-					fullReducAmount = reduction;
+				BigDecimal divide = total.divide(fullLimit,0,RoundingMode.DOWN);
+				int count = divide.intValue();
+				if(count>0){
+					fullReducAmount = reduction.multiply(new BigDecimal(count));
 				}
 			}else if("1".equals(fullRedEntity.getType())){
 				if(new BigDecimal(amount).compareTo(fullRedEntity.getFullLimit()) == 1)

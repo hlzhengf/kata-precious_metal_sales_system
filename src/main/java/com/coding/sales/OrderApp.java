@@ -96,7 +96,7 @@ public class OrderApp {
 		
 		List<OrderItemCommand> items = command.getItems();
 		List<OrderItemRepresentation> orderItems = new ArrayList<OrderItemRepresentation>();
-		Map<String, Object> resultMap = getOrderItemRepresentations(items, orderItems);
+		Map<String, Object> resultMap = getOrderItemRepresentations(items, orderItems,command);
 		BigDecimal totalDiscountPrice = (BigDecimal) resultMap.get("totalDiscountPrice");
 		BigDecimal totalAmount = (BigDecimal) resultMap.get("totalAmount");
 
@@ -135,7 +135,7 @@ public class OrderApp {
 	}
 
 	private Map<String, Object> getOrderItemRepresentations(List<OrderItemCommand> items,
-			List<OrderItemRepresentation> orderItems) {
+			List<OrderItemRepresentation> orderItems,OrderCommand command) {
 
 		List<DiscountItemRepresentation> discountItems = new ArrayList<DiscountItemRepresentation>();
 
@@ -157,7 +157,7 @@ public class OrderApp {
 			orderItems.add(orderItemRepresentation);
 
 			Map<String, Object> discountMap = productInformation.calculationDiscountAmount(fullReductionMap,
-					discountCardMap, Integer.parseInt(count.toString()));
+					discountCardMap, Integer.parseInt(count.toString()),command.getDiscounts());
 			
 			String discountMethod = (String)discountMap.get("method");
 			Object discountcard = discountCardMap.get(discountMethod);
